@@ -35,13 +35,13 @@ import "firebase/compat/firestore";
 ```
 
 > 5. .env 파일 설정
-
+>
 > > 1.  .env 파일 생성하기
 > > 2.  .gitignore 파일에 .env 등록
 > > 3.  firebase.js 파일 각각의 값을 변수로 변경 및 변수명 앞에 process.env. 추가하여 참조
-
+>
 > 6. 프로젝트 루트에 components 및 routes 폴더 생성하기
-
+>
 > 7. App.js 파일을 components 폴더로 이동
 > 8. EditProfile.js, Auth.js, Home.js, Profile.js 파일을 routes 폴더에 생성 , 파일안에 코드는 아래와 같이 추가
 
