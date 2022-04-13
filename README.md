@@ -1,5 +1,119 @@
 # 602277120 정희헌
 
+## 2022 04 13 5주차
+
+1.App.js 코드 추가
+
+```javascript
+import { authService } from "fbase";
+```
+
+2.firebase(fbase.js) 설정, 코드 추가
+구글, 이메일, 깃허브를 파이어베이스에 등록.
+
+```javascript
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCWwAKwvWfrlS8B6xh_1eAs4R8pa1S4j_c",
+  authDomain: "hhwitter-46414.firebaseapp.com",
+  projectId: "hhwitter-46414",
+  storageBucket: "hhwitter-46414.appspot.com",
+  messagingSenderId: "881795990939",
+  appId: "1:881795990939:web:46d167ad86be4c62b10d3e",
+};
+```
+
+3.Auth.js 코드 추가
+
+```javascript
+const Auth = () => {
+  return (
+    <div>
+      <form>
+        <input type="email" placeholder="Email" required />
+        <input type="password" placeholder="Password" required />
+        <input type="submit" value="Log In" />
+      </form>
+      <div>
+        <button>Continue with Google</button>
+        <button>Continue with Github</button>
+      </div>
+    </div>
+  );
+};
+
+export default Auth;
+
+--------------------------
+
+import { authService } from "fbase";
+import { useState } from "react";
+
+const Auth = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [newAccount, setNewAccount] = useState(true);
+  const [error, setError] = useState("");
+
+  const onChange = (event) => {
+    const {
+      target: { name, value },
+    } = event;
+    if (name === "email") {
+      setEmail(value);
+    } else if (name === "password") {
+      setPassword(value);
+    }
+  };
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+    if (newAccount) {
+      // create newAccount
+    } else {
+      // log in
+    }
+  };
+
+  return (
+    <div>
+      <form onSubmit={onSubmit}>
+        <input
+          name="email"
+          type="email"
+          placeholder="Email"
+          required
+          value={email}
+          onChange={onChange}
+        />
+        <input
+          name="password"
+          type="password"
+          placeholder="Password"
+          required
+          value={password}
+          onChange={onChange}
+        />
+        <input type="submit" value={newAccount ? "Create Account" : "Log In"} />
+      </form>
+      <div>
+        <button name="google">Continue with Google</button>
+        <button name="github">Continue with Github</button>
+      </div>
+    </div>
+  );
+};
+
+export default Auth;
+
+
+
+
+
+```
+
+# 602277120 정희헌
+
 ## 2022 04 06 4주차
 
 1. Router.js 코드수정
