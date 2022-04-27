@@ -1,5 +1,72 @@
 # 602277120 정희헌
 
+## 2022 04 27 7주차 (6주차는 시험)
+
+1. Auth.js async , 코드 일부 입력 누락된 것 수정 (async, await)
+
+```javascript
+const onSubmit = async (event) => {
+  event.preventDefault();
+  try {
+    let data;
+    if (newAccount) {
+      // create newAccount
+      data = await authService.createUserWithEmailAndPassword(email, password);
+    } else {
+      // log in
+      data = await authService.signInWithEmailAndPassword(email, password);
+    }
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+```
+
+```javascript
+const toggleAccount = () => setNewAccount((prev) => !prev);
+```
+
+2. fbase.js 부분에서 env 값 불러오는 부분 잘못 수정한거 고치기
+
+```javascript
+const firebaseConfig = {
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+};
+```
+
+3. App.js useEffect 추가, 해당 부분 코드 추가 입력 (로그인 상태 변경)
+
+```javascript
+function App() {
+  const [init, setInit] = userState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    authService.onAuthStateChanged((user) => {
+      if (user) {
+        setIsLoggedIn(user);
+      } else {
+        setIsLoggedIn(false);
+      }
+      setInit(true);
+    });
+  }, []);
+
+```
+
+```javascript
+{
+  init ? <AppRouter isLoggedIn={isLoggedIn} /> : "initializing...";
+}
+```
+
+# 602277120 정희헌
+
 ## 2022 04 13 5주차
 
 1.App.js 코드 추가
@@ -105,11 +172,12 @@ const Auth = () => {
 };
 
 export default Auth;
+```
 
+4. fbase.js 코드추가
 
-
-
-
+```javascript
+export const firebaseInstance = firebase;
 ```
 
 # 602277120 정희헌
