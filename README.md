@@ -1,6 +1,100 @@
 # 602277120 정희헌
 
-## 2022 04 27 7주차 (6주차는 시험)
+## 2022 04 27 9주차
+
+1. Auth.js google, github 로그인 코드 추가
+
+```javascript
+const {
+  target: { name },
+} = event;
+let provider;
+if (name === "google") {
+  provider = new firebaseInstance.auth.GoogleAuthProvider();
+} else if (name === "github") {
+  provider = new firebaseInstance.auth.GithubAuthProvider();
+}
+```
+
+2. Auth.js async await 추가 (로딩 딜레이 때문)
+
+```javascript
+ const onSocialClick = async (event) => { //...
+ const data = await authService.signInWithPopup(provider);
+
+```
+
+3. Router.js 로그인 관련 코드 추가
+
+```javascript
+{
+  isLoggedIn && <Navigation />;
+}
+```
+
+4. Home.js 코드 수정
+
+```javascript
+import { useState } from "react";
+
+const Home = () => {
+  const [nweet, setNweet] = useState("");
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+  };
+
+  const onChange = (event) => {
+    event.preventDefault();
+    const {
+      target: { value },
+    } = event;
+    setNweet(value);
+  };
+
+  return (
+    <from onSubmit={onSubmit}>
+      <input
+        value={nweet}
+        onChange={onChange}
+        type="text"
+        placeholder="What's on your mind?"
+        maxLength={120}
+      />
+      <input type="submit" value="Nweet" />
+    </from>
+  );
+};
+
+export default Home;
+```
+
+5.Navigation.js 파일 생성 및 코드 작성
+
+```javascript
+import { Link } from "react-router-dom";
+
+const Navigation = () => {
+  return (
+    <nav>
+      <ul>
+        <li>
+          <Link to="/">Home</Link>
+        </li>
+        <li>
+          <Link to="/profile">My Profile</Link>
+        </li>
+      </ul>
+    </nav>
+  );
+};
+
+export default Navigation;
+```
+
+# 602277120 정희헌
+
+## 2022 04 27 8주차 (7주차는 시험)
 
 1. Auth.js async , 코드 일부 입력 누락된 것 수정 (async, await)
 
