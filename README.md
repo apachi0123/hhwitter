@@ -1,6 +1,66 @@
 # 602277120 정희헌
 
-## 2022 04 27 9주차
+## 2022 05 11 11주차
+
+1.fbase.js 코드 수정 (firebase dbservice 부분)
+
+```javascript
+export const dbService = firebase.firestore();
+```
+
+2.Home.js onSubmit 부분 async 추가, await 하위 코드 추가
+
+```javascript
+const onSubmit = async (event) => {
+  event.preventDefault();
+  await dbService.collection("nweets").add({
+    text: nweet,
+    createdAt: Date.now(),
+  });
+  setNweet("");
+};
+```
+
+3.Home.js forEach, ... 코드 추가
+
+```javascript
+const Home = () => {
+  const [nweet, setNweet] = useState("");
+  const [nweets, setNweets] = useState([]);
+
+  const getNweets = async () => {
+    const dbNweets = await dbService.collection("nweets").get();
+    dbNweets.forEach((document) => {
+      const nweetObject = { ...document.data(), id: document.id };
+      setNweets((prev) => [document.data(), ...prev]);
+    });
+  };
+```
+
+3.Home.js getNweets 추가
+
+```javascript
+const getNweets = async () => {
+  const dbNweets = await dbService.collection("nweets").get();
+  console.log(dbNweets);
+};
+
+useEffect(() => {
+  getNweets();
+}, []);
+```
+
+```javascript
+
+```
+
+```javascript
+
+```
+
+# 602277120 정희헌
+
+## 2022 05 04 9주차
 
 1. Auth.js google, github 로그인 코드 추가
 
