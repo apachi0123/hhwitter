@@ -1,5 +1,106 @@
 # 602277120 정희헌
 
+## 2022 05 18 12주차
+
+1.Home.js 코드 추가
+
+```javascript
+return (
+  <>
+    <from onSubmit={onSubmit}>
+      <input
+        value={nweet}
+        onChange={onChange}
+        type="text"
+        placeholder="What's on your mind?"
+        maxLength={120}
+      />
+      <input type="submit" value="Nweet" />
+    </from>
+
+    <div>
+      {nweets.map((nweet) => (
+        <div key={nweet.id}>
+          <h4>{nweet.text}</h4>
+        </div>
+      ))}
+    </div>
+  </>
+);
+```
+
+2.App.js 코드 추가 (setuserobj)
+
+```javascript
+const [userObj, setUserObj] = useState(null);
+```
+
+3.Route.js 코드 추가 (userobj)
+
+```javascript
+<Home userObj={userObj} />
+            </Route>
+```
+
+3.Home.js 코드 삭제 (getNweets 안씀)
+
+```javascript
+~~ const getNweets = async () => {
+    const dbNweets = await dbService.collection("nweets").get();
+    dbNweets.forEach((document) => {
+      const nweetObject = { ...document.data(), id: document.id };
+      setNweets((prev) => [document.data(), ...prev]);
+    });
+  };
+
+  getNweets(); ~~
+
+```
+
+3.Home.js 코드 삭제한 부분에 onSnapshot 함수 적용
+
+```javascript
+useEffect(() => {
+    dbService.collection("nweets").onSnapshot((snapshot) => {
+      const newArray = snapshot.docs.map((document) => ({
+        id: document.id,
+        ...document.data(),
+      }));
+      setNweets(newArray);
+    });
+
+```
+
+4.Nweet.js 컴퍼넌트 생성
+
+```javascript
+const Nweet = ({ nweetObj }) => {
+  return (
+    <div>
+      <h4>{nweetObj.text}</h4>
+    </div>
+  );
+};
+
+export default Nweet;
+```
+
+5.Home.js 코드 삭제(Nweet.js에 해당하는 부분)
+
+```javascript
+<div key={nweet.id}>
+  <h4>{nweet.text}</h4>
+</div>
+```
+
+6.Home.js 코드 추가
+
+```javascript
+isOwner={nweet.creatorId === userObj.uid}
+```
+
+# 602277120 정희헌
+
 ## 2022 05 11 11주차
 
 1.fbase.js 코드 수정 (firebase dbservice 부분)
