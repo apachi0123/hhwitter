@@ -1,5 +1,56 @@
 # 602277120 정희헌
 
+## 2022 05 25 13주차
+
+1.파이어베이스 오류나서 새 프로젝트 생성하고 env 파일 새로 찍었음.
+
+2.Home.js 코드 추가
+
+```javascript
+<input type="file" accept="image/*" />
+```
+
+3.App.js 코드 삭제
+
+```javascript
+~~<footer>&copy; { new Date().getFullYear() } Nwitter </footer>~~
+```
+
+4.Home.js 코드 추가
+
+```javascript
+const {
+  target: { files },
+} = event;
+const theFile = files[0];
+```
+
+5.Home.js 코드 추가
+
+```javascript
+const reader = new FileReader();
+reader.readAsDataURL(theFile);
+```
+
+6.Home.js 코드 추가
+
+```javascript
+reader.onloadend = (finishedEvent) => {
+  const {
+    currentTarget: { result },
+  } = finishedEvent;
+  setAttachment(result);
+};
+```
+
+7.Home.js 코드 추가
+
+```javascript
+const [attachment, setAttachment] = useState("");
+```
+
+# 602277120 정희헌
+
 ## 2022 05 18 12주차
 
 1.Home.js 코드 추가
@@ -601,3 +652,5 @@ const AppRouter = () => {
   );
 };
 ```
+
+s
