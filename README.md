@@ -1,5 +1,128 @@
 # 602277120 정희헌
 
+## 2022 06 28 15주차
+
+.
+1.npm install uuid
+
+2.Home.js import 추가
+
+```javascript
+import { v4 as uuidv4 } from "uuid";
+```
+
+3.Home.js 사진 관련 코드 (console.log 제외)
+
+```javascript
+const attachmentRef = storageService.ref().child(`${userObj.uid}/$(uuidv4())`);
+const response = await attachmentRef.putString(attachment, "data_url");
+console.log(await response.ref.getDownloadURL);
+```
+
+4.Home.js 사진 관련 코드 (완성)
+
+```javascript
+const onSubmit = async (e) => {
+  e.preventDefault();
+  const attachmentRef = storageService
+    .ref()
+    .child(`${userObj.uid}/$(uuidv4())`);
+  const response = await attachmentRef.putString(attachment, "data_url");
+  const attachmentUrl = await response.ref.getDownloadURL();
+  await dbService.collection("nweets").add({
+    text: nweet,
+    createdAt: Date.now(),
+    createdID: userObj.uid,
+    attachmentUrl,
+  });
+  setNweet("");
+  setAttachment("");
+};
+```
+
+5.Nweet.js 이미지 관련 코드 추가
+
+```javascript
+{
+  nweetObj.attachmentUrl && (
+    <img src={nweetObj.attachmentUrl} width="50px" height="50px" />
+  );
+}
+```
+
+6.Nweet.js 콘솔 삭제
+
+```javascript
+const onDeleteClick = async () => {
+    const ok = window.confirm("삭제하시겠습니까?");
+    console.log(ok);
+    if (ok) {
+      console.log(nweetObj.id);
+      const data = await dbService.doc(`nweets/${nweetObj.id}`).delete();
+      console.log(data);
+    }
+
+```
+
+7.Nweet.js 코드 추가
+
+```javascript
+if (nweetObj.attachmentUrl !== "")
+  await storageService.refFromURL(nweetObj.attachmentUrl).delete();
+```
+
+8.Profile.js 코드 수정
+
+```javascript
+import { authService, dbService } from "fbase";
+import { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+
+const Profile = ({ userObj, refreshUser }) => {
+  const history = useHistory();
+  const [newDisplayName, setNewDisplayName] = useState(userObj.displayName);
+
+  const onLogOutClick = () => {
+    authService.signOut();
+    history.push("/");
+  };
+
+  const onChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setNewDisplayName(value);
+  };
+
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    if (userObj.displayName !== newDisplayName) {
+      await userObj.updateProfile({ displayName: newDisplayName });
+      refreshUser();
+    }
+  };
+
+  return (
+    <>
+      <form onSubmit={onSubmit}>
+        <input
+          onChange={onChange}
+          type="text"
+          placeholder="Display name"
+          value={newDisplayName}
+        />
+        <input type="submit" value="Update Profile" />
+      </form>
+      <button onClick={onLogOutClick}>Log Out</button>
+    </>
+  );
+};
+
+export default Profile;
+```
+
+# 602277120 정희헌
+
 ## 2022 05 25 13주차
 
 1.파이어베이스 오류나서 새 프로젝트 생성하고 env 파일 새로 찍었음.
